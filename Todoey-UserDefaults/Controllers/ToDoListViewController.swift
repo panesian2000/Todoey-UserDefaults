@@ -61,6 +61,36 @@ class ToDoListViewController: UITableViewController {
     
     //MARKS: Barbutton methods
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        var itemTextField: UITextField = UITextField()
+        let alert: UIAlertController = UIAlertController(title: "Add New Todoey Item", message: "", preferredStyle: UIAlertController.Style.alert)
+        let alertAddAction: UIAlertAction = UIAlertAction(title: "Add Item", style: UIAlertAction.Style.default) {
+            (action) in
+            
+            if let itemDescription = itemTextField.text {
+                if !itemDescription.isEmpty {
+                    let item: [String : String] = ["Description" : itemDescription, "Completed" : "N"]
+                    
+                    self.itemArray.append(item)
+                    self.defaults.set(self.itemArray, forKey: "ToDoListItem")
+                    
+                    self.tableView.reloadData()
+                }
+            }
+        }
+        let alertCancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) {
+            (action) in
+        }
+        
+        alert.addTextField {
+            (textField) in
+            
+            textField.placeholder = "Create new item"
+            itemTextField = textField
+        }
+        alert.addAction(alertAddAction)
+        alert.addAction(alertCancelAction)
+        
+        present(alert, animated: true, completion: nil)
     }
     
 }
