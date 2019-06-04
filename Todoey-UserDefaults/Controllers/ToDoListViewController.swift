@@ -8,13 +8,16 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+class ToDoListViewController: UITableViewController {
+    
+    /*
+        Note:   UserDefaults are used to store small data and standard data type.
+                Custom class object are not allow. Data are store in plist.
+    */
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
-
-
+    
 }
 
