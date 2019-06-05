@@ -16,18 +16,26 @@ class ToDoListViewController: UITableViewController {
     */
     
     //MARK: Local global variables
+    let defaults: UserDefaults = UserDefaults()
     var itemArray: [[String : String]] = []
-    var defaults: UserDefaults = UserDefaults()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Retrieve todo item list from defaults
         if let defaultItemArray = defaults.array(forKey: "ToDoListItem") as? [[String : String]] {
             itemArray = defaultItemArray
         }
+        
+        configSettingTableView()
     }
     
-    //MARKS: Tableview datasource methods
+    //MARK: Tableview config setting methods
+    func configSettingTableView() {
+        tableView.rowHeight = 50
+    }
+    
+    //MARK: Tableview datasource methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemArray.count
     }
@@ -43,7 +51,7 @@ class ToDoListViewController: UITableViewController {
         return cell
     }
     
-    //MARKS: Tableview delegate methods
+    //MARK: Tableview delegate methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell: UITableViewCell = tableView.cellForRow(at: indexPath)!
         var item: [String : String] = itemArray[indexPath.row]
@@ -59,16 +67,16 @@ class ToDoListViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    //MARKS: Barbutton methods
+    //MARK: Barbutton methods
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         var itemTextField: UITextField = UITextField()
         let alert: UIAlertController = UIAlertController(title: "Add New Todoey Item", message: "", preferredStyle: UIAlertController.Style.alert)
         let alertAddAction: UIAlertAction = UIAlertAction(title: "Add Item", style: UIAlertAction.Style.default) {
             (action) in
             
-            if let itemDescription = itemTextField.text {
-                if !itemDescription.isEmpty {
-                    let item: [String : String] = ["Description" : itemDescription, "Completed" : "N"]
+            if let description = itemTextField.text {
+                if !description.isEmpty {
+                    let item: [String : String] = ["Description" : description, "Completed" : "N"]
                     
                     self.itemArray.append(item)
                     self.defaults.set(self.itemArray, forKey: "ToDoListItem")
@@ -81,9 +89,7 @@ class ToDoListViewController: UITableViewController {
             (action) in
         }
         
-        alert.addTextField {
-            (textField) in
-            
+        alert.addTextField { (textField) in
             textField.placeholder = "Create new item"
             itemTextField = textField
         }
